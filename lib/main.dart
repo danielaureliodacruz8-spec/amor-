@@ -306,7 +306,7 @@ class _SalesHomeState extends State<SalesHome> {
     final query = _search.text.trim().toLowerCase();
     final customers = _customers.where((name) => name.toLowerCase().contains(query)).toList();
     return Column(children: [
-      Padding(padding: const EdgeInsets.fromLTRB(18, 10, 18, 8), child: TextField(controller: _search, onChanged: (_) => setState(() {}), decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: 'Buscar pelo nome da pessoa')),
+      Padding(padding: const EdgeInsets.fromLTRB(18, 10, 18, 8), child: TextField(controller: _search, onChanged: (_) => setState(() {}), decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: 'Buscar pelo nome da pessoa'))),
       Expanded(child: customers.isEmpty
           ? _emptyCard('Ainda não há clientes', 'O nome aparecerá aqui depois que Cássia registrar uma venda.')
           : ListView.builder(padding: const EdgeInsets.fromLTRB(18, 4, 18, 24), itemCount: customers.length, itemBuilder: (_, index) {
