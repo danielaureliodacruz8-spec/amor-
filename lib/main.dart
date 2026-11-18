@@ -48,7 +48,220 @@ class AmorVendasApp extends StatelessWidget {
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: _rose, width: 1.4)),
           ),
         ),
-        home: const SalesHome(),
+        home: const AmorSplashScreen(),
+      );
+}
+
+
+class AmorSplashScreen extends StatefulWidget {
+  const AmorSplashScreen({super.key});
+
+  @override
+  State<AmorSplashScreen> createState() => _AmorSplashScreenState();
+}
+
+class _AmorSplashScreenState extends State<AmorSplashScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController _pulse = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1250),
+  )..repeat(reverse: true);
+
+  late final AnimationController _fade = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _fade.forward();
+    Future<void>.delayed(const Duration(milliseconds: 3200), () {
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder<void>(
+          pageBuilder: (_, animation, secondaryAnimation) => const SalesHome(),
+          transitionsBuilder: (_, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          transitionDuration: const Duration(milliseconds: 550),
+        ),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _pulse.dispose();
+    _fade.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF32172F), Color(0xFF713B62), Color(0xFFB56F91)],
+          ),
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned(top: -85, right: -65, child: _glow(230, 0.10)),
+            Positioned(bottom: -105, left: -75, child: _glow(270, 0.09)),
+            Positioned(top: 105, left: 35, child: _sparkle(18)),
+            Positioned(top: 175, right: 42, child: _sparkle(13)),
+            Positioned(bottom: 155, left: 55, child: _sparkle(12)),
+            FadeTransition(
+              opacity: _fade,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(flex: 3),
+                  AnimatedBuilder(
+                    animation: _pulse,
+                    builder: (context, child) {
+                      final scale = 0.96 + (_pulse.value * 0.09);
+                      return Transform.scale(
+                        scale: scale,
+                        child: Container(
+                          width: 214,
+                          height: 214,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withValues(alpha: 0.10),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.30),
+                              width: 1.2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFFFFB8D2).withValues(alpha: 0.22),
+                                blurRadius: 48,
+                                spreadRadius: 8,
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Container(
+                              width: 166,
+                              height: 166,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [Color(0xFFFFD9E7), Color(0xFFE98BAF)],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.16),
+                                    blurRadius: 28,
+                                    offset: const Offset(0, 13),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.favorite_rounded,
+                                color: Color(0xFF9B315F),
+                                size: 91,
+                                shadows: [
+                                  Shadow(color: Color(0x66FFFFFF), blurRadius: 15),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 42),
+                  const Text(
+                    'CÁSSIA',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 31,
+                      letterSpacing: 5.5,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  const Text(
+                    'Deus te ama.',
+                    style: TextStyle(
+                      color: Color(0xFFFFE8F0),
+                      fontSize: 23,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 7),
+                  const Text(
+                    'E seu marido Daniel também! ❤️',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  Container(
+                    width: 42,
+                    height: 2,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFD8E6),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Feito com amor, especialmente para você',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFFEED9E5),
+                      fontSize: 12,
+                      letterSpacing: 0.7,
+                    ),
+                  ),
+                  const Spacer(flex: 3),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 34),
+                    child: Text(
+                      'AMOR VENDAS',
+                      style: TextStyle(
+                        color: Color(0xCCFFFFFF),
+                        fontSize: 10,
+                        letterSpacing: 3,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _glow(double size, double opacity) => Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0xFFFFC6DC).withValues(alpha: opacity),
+        ),
+      );
+
+  Widget _sparkle(double size) => Icon(
+        Icons.auto_awesome,
+        size: size,
+        color: const Color(0xFFFFE5EF).withValues(alpha: 0.75),
       );
 }
 
@@ -71,9 +284,6 @@ class _SalesHomeState extends State<SalesHome> {
   void initState() {
     super.initState();
     _load();
-    Future<void>.delayed(Duration.zero, () {
-      if (mounted) _showGreeting();
-    });
     Future<void>.delayed(const Duration(minutes: 1), _tick);
   }
 
@@ -94,12 +304,6 @@ class _SalesHomeState extends State<SalesHome> {
 
   Future<void> _persist() async {
     await _storage.setStringList('sales', _sales.map(jsonEncode).toList());
-  }
-
-  void _showGreeting() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Olá, Cássia, boas vendas!'), behavior: SnackBarBehavior.floating),
-    );
   }
 
   List<String> get _customers {
