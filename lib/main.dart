@@ -8,13 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const AmorVendasApp());
 
-const _plum = Color(0xFF78566E);
-const _rose = Color(0xFFB9778F);
-const _roseLight = Color(0xFFF6E9EE);
-const _lavender = Color(0xFFECE8F4);
-const _cream = Color(0xFFFFFBF8);
-const _ink = Color(0xFF392F38);
-const _muted = Color(0xFF817780);
+const _plum = Color(0xFF8F1028);
+const _rose = Color(0xFFD72645);
+const _roseLight = Color(0xFFFCE7EC);
+const _lavender = Color(0xFFFFF0E5);
+const _cream = Color(0xFFFFF9F6);
+const _ink = Color(0xFF35131B);
+const _muted = Color(0xFF8C6D73);
 
 String _money(num value) => 'R\$ ${value.toStringAsFixed(2).replaceAll('.', ',')}';
 String _two(int value) => value.toString().padLeft(2, '0');
@@ -105,7 +105,7 @@ class _AmorSplashScreenState extends State<AmorSplashScreen>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFF32172F), Color(0xFF713B62), Color(0xFFB56F91)],
+            colors: [Color(0xFF26040B), Color(0xFF7D1025), Color(0xFFC51E3A)],
           ),
         ),
         child: Stack(
@@ -140,7 +140,7 @@ class _AmorSplashScreenState extends State<AmorSplashScreen>
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFFB8D2).withValues(alpha: 0.22),
+                                color: const Color(0xFFFFD36E).withValues(alpha: 0.22),
                                 blurRadius: 48,
                                 spreadRadius: 8,
                               ),
@@ -155,7 +155,7 @@ class _AmorSplashScreenState extends State<AmorSplashScreen>
                                 gradient: const LinearGradient(
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
-                                  colors: [Color(0xFFFFD9E7), Color(0xFFE98BAF)],
+                                  colors: [Color(0xFFFFE0A3), Color(0xFFD72645)],
                                 ),
                                 boxShadow: [
                                   BoxShadow(
@@ -167,7 +167,7 @@ class _AmorSplashScreenState extends State<AmorSplashScreen>
                               ),
                               child: const Icon(
                                 Icons.favorite_rounded,
-                                color: Color(0xFF9B315F),
+                                color: Color(0xFF8F1028),
                                 size: 91,
                                 shadows: [
                                   Shadow(color: Color(0x66FFFFFF), blurRadius: 15),
@@ -213,7 +213,7 @@ class _AmorSplashScreenState extends State<AmorSplashScreen>
                     width: 42,
                     height: 2,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFD8E6),
+                      color: const Color(0xFFFFD88A),
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -261,7 +261,7 @@ class _AmorSplashScreenState extends State<AmorSplashScreen>
   Widget _sparkle(double size) => Icon(
         Icons.auto_awesome,
         size: size,
-        color: const Color(0xFFFFE5EF).withValues(alpha: 0.75),
+        color: const Color(0xFFFFD88A).withValues(alpha: 0.85),
       );
 }
 
@@ -435,7 +435,7 @@ class _SalesHomeState extends State<SalesHome> {
         ),
         bottomNavigationBar: NavigationBar(
           backgroundColor: Colors.white,
-          indicatorColor: _lavender,
+          indicatorColor: _roseLight,
           selectedIndex: _tab,
           onDestinationSelected: (value) => setState(() => _tab = value),
           destinations: const [
@@ -469,7 +469,7 @@ class _SalesHomeState extends State<SalesHome> {
     return ListView(padding: const EdgeInsets.fromLTRB(18, 8, 18, 26), children: [
       Container(
         padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(gradient: const LinearGradient(colors: [_plum, _rose], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(26)),
+        decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFF650B1D), Color(0xFFD72645), Color(0xFF8F1028)], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(26), boxShadow: [BoxShadow(color: Color(0x338F1028), blurRadius: 22, offset: Offset(0, 10))]),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Um carinho em cada venda', style: TextStyle(color: Colors.white70, fontSize: 13)),
           const SizedBox(height: 6),
