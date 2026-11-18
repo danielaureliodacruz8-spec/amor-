@@ -434,8 +434,8 @@ class _SalesHomeState extends State<SalesHome> {
                 ]),
         ),
         bottomNavigationBar: NavigationBar(
-          backgroundColor: Colors.white,
-          indicatorColor: _roseLight,
+          backgroundColor: const Color(0xFF26040B),
+          indicatorColor: const Color(0xFF8F1028),
           selectedIndex: _tab,
           onDestinationSelected: (value) => setState(() => _tab = value),
           destinations: const [
