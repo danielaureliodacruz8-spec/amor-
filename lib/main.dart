@@ -447,62 +447,192 @@ class _SalesHomeState extends State<SalesHome> {
       );
 
   Widget _header() => Padding(
-        padding: const EdgeInsets.fromLTRB(20, 18, 20, 8),
+        padding: const EdgeInsets.fromLTRB(18, 14, 18, 8),
         child: Row(children: [
           Container(
-            width: 48,
-            height: 48,
-            decoration: const BoxDecoration(shape: BoxShape.circle, color: _roseLight),
-            child: const Icon(Icons.favorite_rounded, color: _plum),
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [Color(0xFF8F1028), Color(0xFFD72645)]),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [BoxShadow(color: Color(0x338F1028), blurRadius: 12, offset: Offset(0, 5))],
+            ),
+            child: const Icon(Icons.favorite_rounded, color: Color(0xFFFFD88A), size: 25),
           ),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(_tab == 0 ? 'Olá, Cássia, boas vendas!' : _tab == 1 ? 'Seus clientes' : 'Relatórios', style: const TextStyle(color: _ink, fontSize: 17, fontWeight: FontWeight.w700)),
-            Text(_dateTime(_now), style: const TextStyle(color: _muted, fontSize: 12)),
+            Text(_tab == 0 ? 'AMOR VENDAS' : _tab == 1 ? 'MEUS CLIENTES' : 'RELATÓRIOS',
+              style: const TextStyle(color: _ink, fontSize: 15, letterSpacing: 1.4, fontWeight: FontWeight.w900)),
+            Text(_tab == 0 ? 'Um carinho em cada venda' : _dateTime(_now),
+              style: const TextStyle(color: _muted, fontSize: 11)),
           ])),
-          IconButton.filledTonal(onPressed: () => _newSale(), tooltip: 'Adicionar venda', icon: const Icon(Icons.add_shopping_cart_rounded, color: _plum)),
+          IconButton(
+            onPressed: () => _newSale(),
+            tooltip: 'Registrar venda',
+            style: IconButton.styleFrom(backgroundColor: _roseLight, foregroundColor: _plum),
+            icon: const Icon(Icons.add_shopping_cart_rounded),
+          ),
         ]),
       );
 
   Widget _dashboard() {
     final recent = _sales.toList()..sort((a, b) => (b['createdAt'] as String).compareTo(a['createdAt'] as String));
-    return ListView(padding: const EdgeInsets.fromLTRB(18, 8, 18, 26), children: [
-      Container(
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(gradient: const LinearGradient(colors: [Color(0xFF650B1D), Color(0xFFD72645), Color(0xFF8F1028)], begin: Alignment.topLeft, end: Alignment.bottomRight), borderRadius: BorderRadius.circular(26), boxShadow: [BoxShadow(color: Color(0x338F1028), blurRadius: 22, offset: Offset(0, 10))]),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('Um carinho em cada venda', style: TextStyle(color: Colors.white70, fontSize: 13)),
-          const SizedBox(height: 6),
-          const Text('Suas vendas,\ncom tudo organizado.', style: TextStyle(color: Colors.white, fontSize: 23, height: 1.2, fontWeight: FontWeight.w700)),
-          const SizedBox(height: 18),
-          FilledButton.icon(onPressed: () => _newSale(), icon: const Icon(Icons.add), label: const Text('Adicionar uma venda'), style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: _plum)),
+    final monthSales = _sales.where((sale) {
+      final date = DateTime.tryParse(sale['createdAt'] as String)?.toLocal();
+      return date != null && date.year == _now.year && date.month == _now.month;
+    }).length;
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 6, 16, 26),
+      children: [
+        Container(
+          padding: const EdgeInsets.fromLTRB(20, 19, 20, 20),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF26040B), Color(0xFF7D1025), Color(0xFFB91F3A)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: const Color(0xFFFFD88A), width: 1),
+            boxShadow: const [BoxShadow(color: Color(0x338F1028), blurRadius: 22, offset: Offset(0, 10))],
+          ),
+          child: Stack(children: [
+            const Positioned(right: 0, top: 0, child: Icon(Icons.local_florist_rounded, color: Color(0x55FFFFD88A), size: 92)),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                const Icon(Icons.favorite_rounded, color: Color(0xFFFFD88A), size: 18),
+                const SizedBox(width: 7),
+                Text('AMOR VENDAS', style: TextStyle(color: Colors.white.withValues(alpha: .82), fontSize: 11, letterSpacing: 2.2, fontWeight: FontWeight.w800)),
+              ]),
+              const SizedBox(height: 15),
+              const Text('Olá, Cássia! ❤️', style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w800)),
+              const SizedBox(height: 5),
+              const Text('Suas vendas, com carinho e organização.', style: TextStyle(color: Color(0xFFFFE5E8), fontSize: 13)),
+              const SizedBox(height: 15),
+              Row(children: [
+                const Icon(Icons.calendar_month_rounded, color: Color(0xFFFFD88A), size: 17),
+                const SizedBox(width: 7),
+                Text(_dateTime(_now).split(' às ').first, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)),
+                  child: InkWell(
+                    onTap: () => _newSale(),
+                    child: const Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(Icons.add, color: _plum, size: 17),
+                      SizedBox(width: 4),
+                      Text('Nova venda', style: TextStyle(color: _plum, fontWeight: FontWeight.w800, fontSize: 12)),
+                    ]),
+                  ),
+                ),
+              ]),
+            ]),
+          ]),
+        ),
+        const SizedBox(height: 17),
+        Row(children: [
+          Expanded(child: _metric('Vendas no mês', '$monthSales', Icons.shopping_cart_rounded, _roseLight)),
+          const SizedBox(width: 10),
+          Expanded(child: _metric('Clientes', '${_customers.length}', Icons.people_alt_rounded, _lavender)),
         ]),
-      ),
-      const SizedBox(height: 16),
-      Row(children: [
-        Expanded(child: _metric('Vendido hoje', _money(_todaySales), Icons.wb_sunny_outlined, _lavender)),
-        const SizedBox(width: 10),
-        Expanded(child: _metric('Em aberto', _money(_openBalance), Icons.favorite_border, _roseLight)),
-      ]),
-      const SizedBox(height: 10),
-      _metric('Clientes cadastrados', '${_customers.length}', Icons.people_outline, const Color(0xFFE8F0EA)),
-      const SizedBox(height: 22),
-      _sectionTitle('Vendas recentes', action: 'Ver clientes', onPressed: () => setState(() => _tab = 1)),
-      const SizedBox(height: 8),
-      if (recent.isEmpty)
-        _emptyCard('As vendas aparecerão aqui', 'Toque em “Adicionar uma venda” para começar.')
-      else
-        ...recent.take(5).map((sale) => _saleCard(sale)),
-    ]);
+        const SizedBox(height: 10),
+        _metric('Total em aberto', _money(_openBalance), Icons.account_balance_wallet_rounded, const Color(0xFFFFE9D7)),
+        const SizedBox(height: 22),
+        _sectionTitle('Acesso rápido'),
+        const SizedBox(height: 10),
+        Row(children: [
+          Expanded(child: _quickAction('Registrar venda', 'Adicionar compra', Icons.add_shopping_cart_rounded, () => _newSale())),
+          const SizedBox(width: 10),
+          Expanded(child: _quickAction('Clientes', 'Ver cadastro', Icons.people_alt_rounded, () => setState(() => _tab = 1))),
+        ]),
+        const SizedBox(height: 10),
+        Row(children: [
+          Expanded(child: _quickAction('Relatórios', 'Compras e saldos', Icons.insert_chart_rounded, () => setState(() => _tab = 2))),
+          const SizedBox(width: 10),
+          Expanded(child: _quickAction('Em aberto', 'Acompanhar valores', Icons.receipt_long_rounded, () => setState(() => _tab = 2))),
+        ]),
+        const SizedBox(height: 22),
+        Row(children: [
+          const Expanded(child: Text('Vendas recentes', style: TextStyle(color: _ink, fontWeight: FontWeight.w800, fontSize: 17))),
+          TextButton(onPressed: () => setState(() => _tab = 2), child: const Text('Ver tudo', style: TextStyle(color: _plum))),
+        ]),
+        const SizedBox(height: 5),
+        if (recent.isEmpty)
+          _emptyCard('Suas vendas aparecerão aqui', 'Toque em “Nova venda” para registrar a primeira.')
+        else
+          ...recent.take(5).map((sale) => _saleCard(sale)),
+        const SizedBox(height: 14),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 18),
+          decoration: BoxDecoration(
+            color: const Color(0xFF3A0914),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color(0xFFFFD88A), width: .7),
+          ),
+          child: const Row(children: [
+            Icon(Icons.local_florist_rounded, color: Color(0xFFFFD88A), size: 27),
+            SizedBox(width: 12),
+            Expanded(child: Text('Você faz a diferença em cada detalhe.', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic))),
+            Icon(Icons.favorite_rounded, color: Color(0xFFFFD88A), size: 20),
+          ]),
+        ),
+      ],
+    );
   }
 
+  Widget _quickAction(String title, String subtitle, IconData icon, VoidCallback onTap) => Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(19),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(19),
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 104),
+            padding: const EdgeInsets.all(13),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(19),
+              border: Border.all(color: const Color(0xFFEED6DA)),
+              boxShadow: const [BoxShadow(color: Color(0x0F8F1028), blurRadius: 10, offset: Offset(0, 4))],
+            ),
+            child: Row(children: [
+              Container(
+                width: 43,
+                height: 43,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(colors: [Color(0xFF8F1028), Color(0xFFD72645)]),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(icon, color: const Color(0xFFFFE1A1), size: 23),
+              ),
+              const SizedBox(width: 10),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(title, style: const TextStyle(color: _ink, fontSize: 13, fontWeight: FontWeight.w800)),
+                const SizedBox(height: 3),
+                Text(subtitle, style: const TextStyle(color: _muted, fontSize: 10)),
+              ])),
+            ]),
+          ),
+        ),
+      );
+
   Widget _metric(String title, String value, IconData icon, Color color) => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFFF0E8EC))),
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(19),
+          border: Border.all(color: const Color(0xFFEEDDE0)),
+          boxShadow: const [BoxShadow(color: Color(0x0A8F1028), blurRadius: 10, offset: Offset(0, 4))],
+        ),
         child: Row(children: [
           Container(width: 42, height: 42, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(14)), child: Icon(icon, color: _plum, size: 21)),
-          const SizedBox(width: 11),
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(title, style: const TextStyle(color: _muted, fontSize: 11)), const SizedBox(height: 3), Text(value, style: const TextStyle(color: _ink, fontWeight: FontWeight.w700, fontSize: 15))])),
+          const SizedBox(width: 10),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(title, style: const TextStyle(color: _muted, fontSize: 11)),
+            const SizedBox(height: 4),
+            Text(value, style: const TextStyle(color: _ink, fontWeight: FontWeight.w800, fontSize: 15)),
+          ])),
         ]),
       );
 
